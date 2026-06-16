@@ -18,7 +18,8 @@ export const DEMO_USER_ID = "demo-user";
 export const demoProfile: Profile = {
   id: DEMO_USER_ID,
   displayName: "Tom Hardy",
-  role: "learner",
+  role: "admin", // demo account can explore the admin CMS too
+
   targetLevel: "professional",
   examDate: new Date(Date.now() + 26 * 86_400_000).toISOString().slice(0, 10),
   dailyGoalXp: 50,
