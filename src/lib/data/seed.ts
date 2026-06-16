@@ -1,9 +1,9 @@
 // In-memory data provider. Powers the MVP/demo/CI with zero infrastructure.
 // Mutations persist for the life of the server process (fine for demo/dev).
-import type { DataProvider, CourseTree, RecordAttemptInput, RecordAttemptResult, SubmitExamInput, GamificationData, AnalyticsData } from "@/lib/data/types";
+import type { DataProvider, CourseTree } from "@/lib/data/types";
 import type { Attempt, ExamAttempt, Question, TopicProgress } from "@/types/domain";
 import { courses, modules, topics, objectivesForTopic } from "@/data/curriculum";
-import { questions as allQuestions, questionsForTopic, questionById } from "@/data/questions";
+import { questions as allQuestions, questionById } from "@/data/questions";
 import { exams, examById } from "@/data/exams";
 import { achievements, challenges } from "@/data/gamification";
 import {

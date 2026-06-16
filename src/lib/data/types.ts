@@ -2,7 +2,6 @@
 // implement this; the rest of the app only ever imports through lib/data.
 import type {
   Achievement,
-  Attempt,
   Challenge,
   Course,
   DashboardData,

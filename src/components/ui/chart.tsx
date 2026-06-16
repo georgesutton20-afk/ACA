@@ -23,11 +23,18 @@ export function ChartContainer({
   className?: string;
   height?: number;
 }) {
+  // Defer to the client so ResponsiveContainer always has real dimensions
+  // (avoids Recharts' width(-1)/height(-1) warnings during prerender).
+  const [mounted, setMounted] = React.useState(false);
+  React.useEffect(() => setMounted(true), []);
+
   return (
     <div className={cn("w-full text-xs", className)} style={{ height }}>
-      <ResponsiveContainer width="100%" height="100%">
-        {children}
-      </ResponsiveContainer>
+      {mounted && (
+        <ResponsiveContainer width="100%" height="100%">
+          {children}
+        </ResponsiveContainer>
+      )}
     </div>
   );
 }
