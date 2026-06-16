@@ -3,9 +3,15 @@ import { notFound } from "next/navigation";
 import { data } from "@/lib/data";
 import { getCurrentUserId } from "@/lib/auth";
 import { ExamPlayer } from "@/components/mock/exam-player";
+import { exams } from "@/data/exams";
 
 interface PageProps {
   params: Promise<{ exam: string }>;
+}
+
+// Pre-render every exam page for the static export.
+export function generateStaticParams() {
+  return exams.map((e) => ({ exam: e.id }));
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {

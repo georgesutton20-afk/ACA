@@ -1,67 +1,49 @@
-import { BookOpen } from "lucide-react";
+import { Suspense } from "react";
 import { data } from "@/lib/data";
 import { getCurrentUserId } from "@/lib/auth";
-import { PageHeader } from "@/components/ui/page-header";
-import { Card, CardContent } from "@/components/ui/card";
-import { QuizPlayer } from "@/components/practice/quiz-player";
-import { TopicPicker, type TopicOption } from "@/components/practice/topic-picker";
+import { PracticeClient } from "@/components/practice/practice-client";
+import type { TopicOption } from "@/components/practice/topic-picker";
+import type { Question } from "@/types/domain";
 
 export const metadata = { title: "Practice" };
 
-export default async function PracticePage({
-  searchParams,
-}: {
-  searchParams: Promise<{ topic?: string }>;
-}) {
-  const sp = await searchParams;
-  const topicId = sp.topic;
+export default async function PracticePage() {
   const userId = await getCurrentUserId();
 
-  const [questions, topic] = topicId
-    ? await Promise.all([
-        data.getQuestionsForTopic(topicId),
-        data.getTopic(topicId),
-      ])
-    : [await data.getRecommended(userId, undefined, 10), undefined];
+  // Bake everything the client needs at build time (static export, no server).
+  const [recommended, tree] = await Promise.all([
+    data.getRecommended(userId, undefined, 10),
+    data.getCourseTree(userId),
+  ]);
 
-  // Build the flat topic list for the picker (only needed on the adaptive view).
-  let topicOptions: TopicOption[] = [];
-  if (!topicId) {
-    const tree = await data.getCourseTree(userId);
-    topicOptions = tree.flatMap((c) =>
-      c.modules.flatMap((m) =>
-        m.topics.map((t) => ({ id: t.id, title: t.title, moduleTitle: m.title })),
-      ),
-    );
+  const topicOptions: TopicOption[] = [];
+  const topicMeta: Record<string, { title: string; summary?: string }> = {};
+  const allTopicIds: string[] = [];
+  for (const c of tree) {
+    for (const m of c.modules) {
+      for (const t of m.topics) {
+        topicOptions.push({ id: t.id, title: t.title, moduleTitle: m.title });
+        topicMeta[t.id] = { title: t.title, summary: t.summary };
+        allTopicIds.push(t.id);
+      }
+    }
   }
 
-  const title = topicId
-    ? `Practising: ${topic?.title ?? "Topic"}`
-    : "Adaptive practice";
-  const description = topicId
-    ? topic?.summary ?? "Work through questions for this topic."
-    : "Questions picked for your weak spots.";
+  const perTopic = await Promise.all(allTopicIds.map((id) => data.getQuestionsForTopic(id)));
+  const questionsByTopic: Record<string, Question[]> = {};
+  allTopicIds.forEach((id, i) => {
+    questionsByTopic[id] = perTopic[i];
+  });
 
   return (
-    <div className="mx-auto max-w-3xl">
-      <PageHeader title={title} description={description} />
-
-      {!topicId && topicOptions.length > 0 && (
-        <TopicPicker topics={topicOptions} />
-      )}
-
-      {questions.length === 0 ? (
-        <Card>
-          <CardContent className="flex flex-col items-center gap-3 p-10 text-center">
-            <BookOpen className="size-10 text-muted-foreground" />
-            <p className="text-sm text-muted-foreground">
-              No questions available here yet. Try picking a different topic.
-            </p>
-          </CardContent>
-        </Card>
-      ) : (
-        <QuizPlayer key={topicId ?? "adaptive"} questions={questions} userId={userId} />
-      )}
-    </div>
+    <Suspense>
+      <PracticeClient
+        userId={userId}
+        recommended={recommended}
+        questionsByTopic={questionsByTopic}
+        topicMeta={topicMeta}
+        topicOptions={topicOptions}
+      />
+    </Suspense>
   );
 }

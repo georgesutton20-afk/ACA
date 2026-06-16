@@ -10,9 +10,15 @@ import { Progress } from "@/components/ui/progress";
 import { Markdown } from "@/components/ui/markdown";
 import { data } from "@/lib/data";
 import { getCurrentUserId } from "@/lib/auth";
+import { topics } from "@/data/curriculum";
 
 interface PageProps {
   params: Promise<{ topic: string }>;
+}
+
+// Pre-render every topic page for the static export.
+export function generateStaticParams() {
+  return topics.map((t) => ({ topic: t.id }));
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {

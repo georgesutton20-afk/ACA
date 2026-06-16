@@ -1,13 +1,9 @@
-"use server";
-
-import { revalidatePath } from "next/cache";
+// Static-export note: runs client-side against the in-memory provider (no
+// server on GitHub Pages). On a server deployment, re-add "use server" +
+// revalidatePath to persist results to the backend.
 import { data, type SubmitExamInput } from "@/lib/data";
 import type { ExamAttempt } from "@/types/domain";
 
 export async function submitExam(input: SubmitExamInput): Promise<ExamAttempt> {
-  const attempt = await data.submitExam(input);
-  revalidatePath("/mock");
-  revalidatePath("/dashboard");
-  revalidatePath("/analytics");
-  return attempt;
+  return data.submitExam(input);
 }

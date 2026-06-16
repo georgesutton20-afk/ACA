@@ -1,6 +1,6 @@
-"use server";
-
-import { revalidatePath } from "next/cache";
+// Static-export note: runs client-side against the in-memory provider (edits
+// persist for the session, reset on reload). On a server deployment, re-add
+// "use server" + revalidatePath to persist to the backend.
 import { data } from "@/lib/data";
 import type { Question } from "@/types/domain";
 
@@ -25,15 +25,10 @@ export async function saveQuestion(input: Question): Promise<Question> {
     answers: answers.length > 0 ? answers : undefined,
   };
 
-  const saved = await data.upsertQuestion(question);
-  revalidatePath("/admin");
-  revalidatePath("/practice");
-  return saved;
+  return data.upsertQuestion(question);
 }
 
 /** Remove a question from the bank. */
 export async function removeQuestion(id: string): Promise<void> {
   await data.deleteQuestion(id);
-  revalidatePath("/admin");
-  revalidatePath("/practice");
 }

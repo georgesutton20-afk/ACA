@@ -41,6 +41,30 @@ Open <http://localhost:3000>. **No configuration is required** — the app runs 
 deterministic seed dataset (a fully explorable demo learner, "Tom Hardy"). Start at the
 landing page or jump straight to `/dashboard`.
 
+## 🌐 Deploy to GitHub Pages
+
+The app is configured for a **static export** (`output: 'export'`) and ships with a
+workflow at `.github/workflows/deploy-pages.yml`.
+
+1. In the repo: **Settings → Pages → Build and deployment → Source = "GitHub Actions"**
+   (one-time).
+2. Push to `main` (or the active branch) — the workflow builds the export and publishes it.
+3. Your site goes live at `https://<owner>.github.io/<repo>/`.
+
+The workflow sets `NEXT_PUBLIC_BASE_PATH=/<repo>` so all assets resolve under the repo
+subpath (without this the page would load unstyled). Preview the export locally:
+
+```bash
+NEXT_PUBLIC_BASE_PATH=/ACA npm run build   # outputs to ./out
+npx serve out                              # or any static file server
+```
+
+> **Static-host note:** GitHub Pages has no server, so the interactive features run on
+> seed data in the browser (dashboard, learn map, practice, mock exams, analytics,
+> gamification). Real Supabase auth and *persistent* admin edits require a server host —
+> deploy to **Vercel** for the full backend-connected experience (no code changes needed
+> beyond unsetting the export config).
+
 ## 🔌 Going live with Supabase
 
 1. Create a Supabase project.
