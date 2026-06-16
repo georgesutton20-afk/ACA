@@ -2,6 +2,7 @@
 // plus a deterministic generator so every topic has practice material.
 import type { Answer, Difficulty, Question, QuestionType } from "@/types/domain";
 import { topics } from "@/data/curriculum";
+import { extraQuestions } from "@/data/questions-extra";
 
 let aSeq = 0;
 function mc(
@@ -340,13 +341,16 @@ function fillerForTopic(topicId: string, title: string, n: number): Question[] {
   return out;
 }
 
+// All hand-authored questions (the original curated set + the expanded bank).
+const authoredQuestions: Question[] = [...curatedQuestions, ...extraQuestions];
+
 const fillerQuestions: Question[] = topics.flatMap((t) => {
-  const curatedCount = curatedQuestions.filter((q) => q.topicId === t.id).length;
-  const need = Math.max(0, 5 - curatedCount);
+  const authoredCount = authoredQuestions.filter((q) => q.topicId === t.id).length;
+  const need = Math.max(0, 5 - authoredCount);
   return fillerForTopic(t.id, t.title, need);
 });
 
-export const questions: Question[] = [...curatedQuestions, ...fillerQuestions];
+export const questions: Question[] = [...authoredQuestions, ...fillerQuestions];
 
 export function questionsForTopic(topicId: string) {
   return questions.filter((q) => q.topicId === topicId);
