@@ -1,12 +1,12 @@
+"use client";
 import { Award, Flame, Trophy, Zap } from "lucide-react";
 import { data } from "@/lib/data";
-import { getCurrentUserId } from "@/lib/auth";
+import { useAuth, useAsync } from "@/lib/auth-client";
+import { PageLoading } from "@/components/ui/page-loading";
 import { PageHeader } from "@/components/ui/page-header";
 import { Card } from "@/components/ui/card";
 import { LevelProgress } from "@/components/gamification/level-progress";
 import { GamificationTabs } from "@/components/gamification/gamification-tabs";
-
-export const metadata = { title: "Achievements" };
 
 const CURRENT_USER_NAME = "Tom Hardy";
 
@@ -32,13 +32,19 @@ function StatChip({
   );
 }
 
-export default async function GamificationPage() {
-  const userId = await getCurrentUserId();
-  const [gamification, leaderboard] = await Promise.all([
-    data.getGamification(userId),
-    data.getLeaderboard(),
-  ]);
+export default function GamificationPage() {
+  const { userId } = useAuth();
+  const { data: bundle, loading } = useAsync(
+    () =>
+      Promise.all([data.getGamification(userId!), data.getLeaderboard()]).then(
+        ([gamification, leaderboard]) => ({ gamification, leaderboard }),
+      ),
+    [userId],
+    !!userId,
+  );
 
+  if (loading || !bundle) return <PageLoading />;
+  const { gamification, leaderboard } = bundle;
   const { xp, achievements, earned, challenges, userChallenges } = gamification;
 
   return (

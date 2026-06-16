@@ -1,6 +1,8 @@
+"use client";
 import { Clock, Gauge, Target, TrendingUp } from "lucide-react";
 import { data } from "@/lib/data";
-import { getCurrentUserId } from "@/lib/auth";
+import { useAuth, useAsync } from "@/lib/auth-client";
+import { PageLoading } from "@/components/ui/page-loading";
 import { cn, pct, formatDuration } from "@/lib/utils";
 import { PageHeader } from "@/components/ui/page-header";
 import {
@@ -16,8 +18,6 @@ import { TopicRadar } from "@/components/analytics/topic-radar";
 import { AccuracyBar } from "@/components/analytics/accuracy-bar";
 import { MockTrendLine } from "@/components/analytics/mock-trend-line";
 import { ReadinessRadial } from "@/components/analytics/readiness-radial";
-
-export const metadata = { title: "Analytics" };
 
 function StatCard({
   icon: Icon,
@@ -50,9 +50,15 @@ function strength(mastery: number): { label: string; variant: "success" | "warni
   return { label: "Developing", variant: "warning" };
 }
 
-export default async function AnalyticsPage() {
-  const userId = await getCurrentUserId();
-  const analytics = await data.getAnalytics(userId);
+export default function AnalyticsPage() {
+  const { userId } = useAuth();
+  const { data: analytics, loading } = useAsync(
+    () => data.getAnalytics(userId!),
+    [userId],
+    !!userId,
+  );
+
+  if (loading || !analytics) return <PageLoading />;
 
   if (analytics.byTopic.length === 0) {
     return (

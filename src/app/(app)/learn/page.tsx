@@ -1,14 +1,19 @@
-import type { Metadata } from "next";
+"use client";
 import { PageHeader } from "@/components/ui/page-header";
 import { LearnMap } from "@/components/learn/learn-map";
 import { data } from "@/lib/data";
-import { getCurrentUserId } from "@/lib/auth";
+import { useAuth, useAsync } from "@/lib/auth-client";
+import { PageLoading } from "@/components/ui/page-loading";
 
-export const metadata: Metadata = { title: "Learn" };
+export default function LearnPage() {
+  const { userId } = useAuth();
+  const { data: tree, loading } = useAsync(
+    () => data.getCourseTree(userId!),
+    [userId],
+    !!userId,
+  );
 
-export default async function LearnPage() {
-  const userId = await getCurrentUserId();
-  const tree = await data.getCourseTree(userId);
+  if (loading || !tree) return <PageLoading />;
 
   return (
     <div>

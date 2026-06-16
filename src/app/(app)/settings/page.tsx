@@ -1,13 +1,19 @@
+"use client";
 import { PageHeader } from "@/components/ui/page-header";
 import { SettingsForm } from "@/components/settings/settings-form";
 import { data } from "@/lib/data";
-import { getCurrentUserId } from "@/lib/auth";
+import { useAuth, useAsync } from "@/lib/auth-client";
+import { PageLoading } from "@/components/ui/page-loading";
 
-export const metadata = { title: "Settings" };
+export default function SettingsPage() {
+  const { userId } = useAuth();
+  const { data: profile, loading } = useAsync(
+    () => data.getProfile(userId!),
+    [userId],
+    !!userId,
+  );
 
-export default async function SettingsPage() {
-  const userId = await getCurrentUserId();
-  const profile = await data.getProfile(userId);
+  if (loading || !profile) return <PageLoading />;
 
   return (
     <div>

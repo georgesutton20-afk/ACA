@@ -122,19 +122,25 @@ create or replace view leaderboard as
   join profiles p on p.id = x.user_id;
 
 -- ── admin helper ─────────────────────────────────────────────────────────────
-create or replace function is_admin() returns boolean as $$
-  select exists (select 1 from profiles where id = auth.uid() and role = 'admin');
-$$ language sql stable security definer;
+create or replace function is_admin() returns boolean
+  language sql stable security definer set search_path = public
+as $$
+  select exists (select 1 from public.profiles where id = auth.uid() and role = 'admin');
+$$;
 
 -- ── auto-create profile + xp row on signup ───────────────────────────────────
-create or replace function handle_new_user() returns trigger as $$
+-- security definer + pinned search_path so the trigger can write to public.*
+-- while running in the auth signup transaction.
+create or replace function handle_new_user() returns trigger
+  language plpgsql security definer set search_path = public
+as $$
 begin
-  insert into profiles (id, display_name)
+  insert into public.profiles (id, display_name)
     values (new.id, coalesce(new.raw_user_meta_data->>'display_name', split_part(new.email,'@',1)))
     on conflict (id) do nothing;
-  insert into user_xp (user_id) values (new.id) on conflict (user_id) do nothing;
+  insert into public.user_xp (user_id) values (new.id) on conflict (user_id) do nothing;
   return new;
-end; $$ language plpgsql security definer;
+end; $$;
 
 drop trigger if exists on_auth_user_created on auth.users;
 create trigger on_auth_user_created after insert on auth.users

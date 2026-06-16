@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { supabaseEnabled } from "@/lib/supabase/config";
 
 export function AuthForm({ mode }: { mode: "login" | "signup" }) {
   const router = useRouter();
@@ -21,17 +22,24 @@ export function AuthForm({ mode }: { mode: "login" | "signup" }) {
     const form = new FormData(e.currentTarget);
     const email = String(form.get("email"));
     const password = String(form.get("password"));
+    const name = String(form.get("name") ?? "").trim();
 
     // Supabase is wired but optional in the demo. If configured, authenticate;
     // otherwise fall through to the explorable demo experience.
-    if (process.env.NEXT_PUBLIC_USE_SUPABASE === "true") {
+    if (supabaseEnabled) {
       try {
         const { createClient } = await import("@/lib/supabase/client");
         const supabase = createClient();
-        const fn = isSignup ? supabase.auth.signUp : supabase.auth.signInWithPassword;
-        const { error } = await fn({ email, password });
+        const { error } = isSignup
+          ? await supabase.auth.signUp({
+              email,
+              password,
+              options: { data: { display_name: name || email.split("@")[0] } },
+            })
+          : await supabase.auth.signInWithPassword({ email, password });
         if (error) throw error;
         router.push("/dashboard");
+        router.refresh();
         return;
       } catch (err) {
         setError(err instanceof Error ? err.message : "Authentication failed");
@@ -80,13 +88,15 @@ export function AuthForm({ mode }: { mode: "login" | "signup" }) {
             {isSignup ? "Log in" : "Create one"}
           </Link>
         </p>
-        <p className="mt-2 text-center text-xs text-muted-foreground">
-          Or{" "}
-          <Link href="/dashboard" className="underline">
-            continue as a guest
-          </Link>
-          .
-        </p>
+        {!supabaseEnabled && (
+          <p className="mt-2 text-center text-xs text-muted-foreground">
+            Or{" "}
+            <Link href="/dashboard" className="underline">
+              continue as a guest
+            </Link>
+            .
+          </p>
+        )}
       </CardContent>
     </Card>
   );

@@ -1,8 +1,10 @@
+"use client";
 import Link from "next/link";
 import { ArrowRight, Flame, GraduationCap, Target, TrendingUp } from "lucide-react";
 import { data } from "@/lib/data";
-import { getCurrentUserId } from "@/lib/auth";
+import { useAuth, useAsync } from "@/lib/auth-client";
 import { PageHeader } from "@/components/ui/page-header";
+import { PageLoading } from "@/components/ui/page-loading";
 import { Button } from "@/components/ui/button";
 import { StatCard } from "@/components/dashboard/stat-card";
 import { ReadinessGauge } from "@/components/dashboard/readiness-gauge";
@@ -11,11 +13,15 @@ import { WeeklyChart } from "@/components/dashboard/weekly-chart";
 import { WeakTopics } from "@/components/dashboard/weak-topics";
 import { UpcomingExams } from "@/components/dashboard/upcoming-exams";
 
-export const metadata = { title: "Dashboard" };
+export default function DashboardPage() {
+  const { userId } = useAuth();
+  const { data: dashboard, loading } = useAsync(
+    () => data.getDashboard(userId!),
+    [userId],
+    !!userId,
+  );
 
-export default async function DashboardPage() {
-  const userId = await getCurrentUserId();
-  const dashboard = await data.getDashboard(userId);
+  if (loading || !dashboard) return <PageLoading />;
   const firstName = dashboard.profile.displayName.split(" ")[0];
 
   return (

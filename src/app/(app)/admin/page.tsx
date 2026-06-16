@@ -1,13 +1,13 @@
+"use client";
 import { ShieldCheck } from "lucide-react";
 import { PageHeader } from "@/components/ui/page-header";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { QuestionTable } from "@/components/admin/question-table";
 import { data } from "@/lib/data";
-import { getCurrentUserId } from "@/lib/auth";
+import { useAuth, useAsync } from "@/lib/auth-client";
+import { PageLoading } from "@/components/ui/page-loading";
 import type { QuestionType } from "@/types/domain";
-
-export const metadata = { title: "Admin" };
 
 const TYPE_LABELS: Record<QuestionType, string> = {
   mcq: "Multiple choice",
@@ -17,12 +17,20 @@ const TYPE_LABELS: Record<QuestionType, string> = {
   written: "Written",
 };
 
-export default async function AdminPage() {
-  const userId = await getCurrentUserId();
-  const [questions, tree] = await Promise.all([
-    data.listAllQuestions(),
-    data.getCourseTree(userId),
-  ]);
+export default function AdminPage() {
+  const { userId } = useAuth();
+  const { data: bundle, loading } = useAsync(
+    () =>
+      Promise.all([
+        data.listAllQuestions(),
+        data.getCourseTree(userId!),
+      ]).then(([questions, tree]) => ({ questions, tree })),
+    [userId],
+    !!userId,
+  );
+
+  if (loading || !bundle) return <PageLoading />;
+  const { questions, tree } = bundle;
 
   // Flatten the course tree into a {id, label} list for the topic dropdown.
   const topics = tree.flatMap((node) =>

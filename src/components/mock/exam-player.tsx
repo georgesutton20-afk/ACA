@@ -28,6 +28,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { submitExam } from "@/app/(app)/mock/actions";
+import { useAuth } from "@/lib/auth-client";
 import { ExamResults, type ExamResultAnswer } from "./exam-results";
 
 type Phase = "intro" | "exam" | "results";
@@ -65,15 +66,8 @@ function isAnswered(a: AnswerState | undefined, type: Question["type"]): boolean
   }
 }
 
-export function ExamPlayer({
-  exam,
-  questions,
-  userId,
-}: {
-  exam: Exam;
-  questions: Question[];
-  userId: string;
-}) {
+export function ExamPlayer({ exam, questions }: { exam: Exam; questions: Question[] }) {
+  const { userId } = useAuth();
   const total = questions.length;
   const durationMs = exam.durationMinutes * 60 * 1000;
 
@@ -203,6 +197,7 @@ export function ExamPlayer({
     setPhase("results");
 
     startTransition(async () => {
+      if (!userId) return;
       try {
         await submitExam({
           userId,

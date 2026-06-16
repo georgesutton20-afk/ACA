@@ -12,6 +12,7 @@ import { Input, Textarea } from "@/components/ui/input";
 import { Markdown } from "@/components/ui/markdown";
 import { Card, CardContent } from "@/components/ui/card";
 import { recordAttempt } from "@/app/(app)/practice/actions";
+import { useAuth } from "@/lib/auth-client";
 import { FeedbackPanel } from "./feedback-panel";
 
 type DifficultyVariant = "success" | "warning" | "destructive";
@@ -29,13 +30,8 @@ interface Graded {
   selectedAnswerIds: Set<string>;
 }
 
-export function QuizPlayer({
-  questions,
-  userId,
-}: {
-  questions: Question[];
-  userId: string;
-}) {
+export function QuizPlayer({ questions }: { questions: Question[] }) {
+  const { userId } = useAuth();
   const total = questions.length;
   const [index, setIndex] = useState(0);
   const [finished, setFinished] = useState(false);
@@ -139,7 +135,7 @@ export function QuizPlayer({
   }
 
   function handleCheck(selfMark?: boolean) {
-    if (graded) return;
+    if (graded || !userId) return;
     const timeMs = Date.now() - startRef.current;
     const { isCorrect, score } = grade(selfMark);
     const nextCombo = isCorrect ? combo + 1 : 1;

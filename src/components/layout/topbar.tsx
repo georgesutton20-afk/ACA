@@ -18,10 +18,12 @@ export function Topbar({
   displayName,
   level,
   streak,
+  onSignOut,
 }: {
   displayName: string;
   level: number;
   streak: number;
+  onSignOut?: () => void;
 }) {
   const initials = displayName
     .split(" ")
@@ -66,11 +68,17 @@ export function Topbar({
               </Link>
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem asChild>
-              <Link href="/">
-                <LogOut /> Exit demo
-              </Link>
-            </DropdownMenuItem>
+            {onSignOut ? (
+              <DropdownMenuItem onSelect={() => onSignOut()}>
+                <LogOut /> Log out
+              </DropdownMenuItem>
+            ) : (
+              <DropdownMenuItem asChild>
+                <Link href="/">
+                  <LogOut /> Exit demo
+                </Link>
+              </DropdownMenuItem>
+            )}
           </DropdownMenuContent>
         </DropdownMenu>
       </div>

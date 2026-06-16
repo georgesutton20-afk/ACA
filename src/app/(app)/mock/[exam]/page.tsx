@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { data } from "@/lib/data";
-import { getCurrentUserId } from "@/lib/auth";
 import { ExamPlayer } from "@/components/mock/exam-player";
 import { exams } from "@/data/exams";
 
@@ -22,17 +21,14 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
 export default async function ExamPage({ params }: PageProps) {
   const { exam: examId } = await params;
+  // Exam + questions are bundled content — resolved at build with no session.
   const exam = await data.getExam(examId);
   if (!exam) notFound();
-
-  const [questions, userId] = await Promise.all([
-    data.getExamQuestions(examId),
-    getCurrentUserId(),
-  ]);
+  const questions = await data.getExamQuestions(examId);
 
   return (
     <div className="mx-auto max-w-3xl">
-      <ExamPlayer exam={exam} questions={questions} userId={userId} />
+      <ExamPlayer exam={exam} questions={questions} />
     </div>
   );
 }

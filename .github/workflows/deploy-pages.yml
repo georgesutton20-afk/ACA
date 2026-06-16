@@ -38,8 +38,13 @@ jobs:
       - name: Build static export
         # basePath must match the repo name so assets resolve at
         # https://<owner>.github.io/<repo>/
+        # The Supabase URL + publishable (anon) key are public by design —
+        # security comes from row-level security, not from hiding the key.
         env:
           NEXT_PUBLIC_BASE_PATH: /${{ github.event.repository.name }}
+          NEXT_PUBLIC_USE_SUPABASE: "true"
+          NEXT_PUBLIC_SUPABASE_URL: https://tudzfkgcydxgsqnarowp.supabase.co
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: sb_publishable_m8_2QBpPLi2IKgYllhA6uw_0HUoTHvP
         run: npm run build
 
       - name: Disable Jekyll processing

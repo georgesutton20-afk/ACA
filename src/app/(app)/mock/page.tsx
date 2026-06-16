@@ -1,22 +1,29 @@
+"use client";
 import Link from "next/link";
 import { ClipboardList, FileText, ListChecks, TrendingUp } from "lucide-react";
 import type { Exam, ExamAttempt } from "@/types/domain";
 import { data } from "@/lib/data";
-import { getCurrentUserId } from "@/lib/auth";
+import { useAuth, useAsync } from "@/lib/auth-client";
+import { PageLoading } from "@/components/ui/page-loading";
 import { cn } from "@/lib/utils";
 import { PageHeader } from "@/components/ui/page-header";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 
-export const metadata = { title: "Mock exams" };
+export default function MockPage() {
+  const { userId } = useAuth();
+  const { data: bundle, loading } = useAsync(
+    () =>
+      Promise.all([data.getExams(), data.getExamAttempts(userId!)]).then(
+        ([exams, attempts]) => ({ exams, attempts }),
+      ),
+    [userId],
+    !!userId,
+  );
 
-export default async function MockPage() {
-  const userId = await getCurrentUserId();
-  const [exams, attempts] = await Promise.all([
-    data.getExams(),
-    data.getExamAttempts(userId),
-  ]);
+  if (loading || !bundle) return <PageLoading />;
+  const { exams, attempts } = bundle;
 
   // Attempts grouped by exam for "best" lookup.
   const submitted = attempts.filter(
