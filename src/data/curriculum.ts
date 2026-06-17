@@ -97,6 +97,76 @@ export const topics: Topic[] = [
   { id: "t-sbm-fin", moduleId: "m-sbm", slug: "financial-strategy", title: "Financial strategy", summary: "Valuations, M&A and reorganisations.", sortOrder: 1 },
   // Case Study
   { id: "t-cs-skills", moduleId: "m-cs", slug: "case-study-skills", title: "Case Study skills", summary: "Assimilating information and structuring answers.", sortOrder: 1 },
+
+  // ── Expanded coverage (≈30 questions/paper) ─────────────────────────────
+  // Accounting (m-acc)
+  { id: "t-acc-bank", moduleId: "m-acc", slug: "bank-reconciliations", title: "Bank reconciliations", summary: "Reconciling the cash book to the bank statement.", sortOrder: 4 },
+  { id: "t-acc-ctrl", moduleId: "m-acc", slug: "control-accounts", title: "Control accounts & errors", summary: "Receivables/payables control accounts, suspense and error correction.", sortOrder: 5 },
+  { id: "t-acc-inv", moduleId: "m-acc", slug: "inventory", title: "Inventory valuation", summary: "Lower of cost and NRV; FIFO and AVCO.", sortOrder: 6 },
+  // Assurance (m-ass)
+  { id: "t-ass-evid", moduleId: "m-ass", slug: "assurance-evidence", title: "Gathering evidence", summary: "Procedures, assertions and documentation.", sortOrder: 3 },
+  { id: "t-ass-eth", moduleId: "m-ass", slug: "professional-ethics", title: "Professional ethics", summary: "Fundamental principles and threats.", sortOrder: 4 },
+  { id: "t-ass-rep", moduleId: "m-ass", slug: "assurance-reports", title: "Assurance reports", summary: "Reporting on assurance engagements.", sortOrder: 5 },
+  // Business, Technology & Finance (m-btf)
+  { id: "t-btf-org", moduleId: "m-btf", slug: "business-objectives", title: "Business objectives & structure", summary: "Stakeholders, organisational forms and objectives.", sortOrder: 3 },
+  { id: "t-btf-risk", moduleId: "m-btf", slug: "risk-management", title: "Risk & internal control", summary: "Identifying and managing business risk.", sortOrder: 4 },
+  { id: "t-btf-tech", moduleId: "m-btf", slug: "technology-data", title: "Technology & data", summary: "Information systems, data and cyber risk.", sortOrder: 5 },
+  { id: "t-btf-prof", moduleId: "m-btf", slug: "finance-function", title: "The finance function & profession", summary: "Roles of finance, capital markets and the profession.", sortOrder: 6 },
+  // Law (m-law)
+  { id: "t-law-agency", moduleId: "m-law", slug: "agency-employment", title: "Agency & employment", summary: "Agency relationships and employment status.", sortOrder: 3 },
+  { id: "t-law-tort", moduleId: "m-law", slug: "tort-negligence", title: "Tort & negligence", summary: "Duty of care, breach and professional liability.", sortOrder: 4 },
+  { id: "t-law-ins", moduleId: "m-law", slug: "insolvency", title: "Insolvency & directors", summary: "Winding up, administration and director liability.", sortOrder: 5 },
+  // Management Information (m-mi)
+  { id: "t-mi-price", moduleId: "m-mi", slug: "pricing-decisions", title: "Pricing & decision making", summary: "Relevant costing and short-term decisions.", sortOrder: 4 },
+  { id: "t-mi-cash", moduleId: "m-mi", slug: "cash-budgets", title: "Cash budgets & forecasting", summary: "Preparing cash budgets and forecasts.", sortOrder: 5 },
+  // Principles of Taxation (m-tax)
+  { id: "t-tax-nic", moduleId: "m-tax", slug: "national-insurance", title: "National Insurance", summary: "Class 1, 1A, 2 and 4 contributions.", sortOrder: 3 },
+  { id: "t-tax-ct", moduleId: "m-tax", slug: "corporation-tax-basics", title: "Corporation tax basics", summary: "Computing a company's taxable total profits.", sortOrder: 4 },
+  { id: "t-tax-cgt", moduleId: "m-tax", slug: "chargeable-gains-basics", title: "Chargeable gains basics", summary: "Computing simple chargeable gains.", sortOrder: 5 },
+  { id: "t-tax-admin", moduleId: "m-tax", slug: "tax-administration", title: "Tax administration & ethics", summary: "Filing, payment, penalties and ethics.", sortOrder: 6 },
+  // Audit & Assurance (m-aa)
+  { id: "t-aa-eth", moduleId: "m-aa", slug: "ethics-acceptance", title: "Ethics & engagement acceptance", summary: "Threats, safeguards and acceptance decisions.", sortOrder: 4 },
+  { id: "t-aa-comp", moduleId: "m-aa", slug: "completion-review", title: "Completion & review", summary: "Going concern, subsequent events and review.", sortOrder: 5 },
+  // FAR (m-far)
+  { id: "t-far-ppe", moduleId: "m-far", slug: "ppe-impairment", title: "PPE & impairment", summary: "IAS 16 and IAS 36 measurement.", sortOrder: 5 },
+  { id: "t-far-fi", moduleId: "m-far", slug: "financial-instruments", title: "Financial instruments (IFRS 9)", summary: "Classification, measurement and impairment.", sortOrder: 6 },
+  { id: "t-far-prov", moduleId: "m-far", slug: "provisions", title: "Provisions (IAS 37)", summary: "Recognition of provisions and contingencies.", sortOrder: 7 },
+  { id: "t-far-cf", moduleId: "m-far", slug: "cash-flows", title: "Statements of cash flows", summary: "Preparing IAS 7 cash flow statements.", sortOrder: 8 },
+  // Tax Compliance (m-tc)
+  { id: "t-tc-it", moduleId: "m-tc", slug: "income-tax-nic", title: "Income tax & NIC", summary: "Employment, trading income and NIC.", sortOrder: 3 },
+  { id: "t-tc-vat", moduleId: "m-tc", slug: "vat-compliance", title: "VAT", summary: "VAT computations, schemes and admin.", sortOrder: 4 },
+  { id: "t-tc-iht", moduleId: "m-tc", slug: "inheritance-tax", title: "Inheritance tax", summary: "Lifetime transfers and the death estate.", sortOrder: 5 },
+  { id: "t-tc-eth", moduleId: "m-tc", slug: "ethics-tax", title: "Ethics in tax", summary: "Standards for tax planning and errors.", sortOrder: 6 },
+  // Business Planning: Taxation (m-bpt)
+  { id: "t-bpt-inc", moduleId: "m-bpt", slug: "incorporation", title: "Incorporation & remuneration", summary: "Trading structure and profit extraction.", sortOrder: 2 },
+  { id: "t-bpt-grp", moduleId: "m-bpt", slug: "groups-losses", title: "Groups & loss relief", summary: "Group relief, gains groups and losses.", sortOrder: 3 },
+  { id: "t-bpt-cgt", moduleId: "m-bpt", slug: "corporate-gains-reliefs", title: "Corporate gains & reliefs", summary: "Rollover, gift and BADR planning.", sortOrder: 4 },
+  { id: "t-bpt-os", moduleId: "m-bpt", slug: "overseas", title: "Overseas aspects", summary: "Residence, double tax and overseas trade.", sortOrder: 5 },
+  { id: "t-bpt-eth", moduleId: "m-bpt", slug: "ethics-planning", title: "Ethics & planning", summary: "Avoidance, evasion and professional standards.", sortOrder: 6 },
+  // Financial Management (m-fm)
+  { id: "t-fm-finance", moduleId: "m-fm", slug: "financing", title: "Financing options", summary: "Equity, debt and capital structure.", sortOrder: 3 },
+  { id: "t-fm-risk", moduleId: "m-fm", slug: "financial-risk", title: "Managing financial risk", summary: "Hedging interest and currency risk.", sortOrder: 4 },
+  { id: "t-fm-val", moduleId: "m-fm", slug: "valuations", title: "Business valuations", summary: "Asset, earnings and cash-flow valuations.", sortOrder: 5 },
+  { id: "t-fm-wc", moduleId: "m-fm", slug: "working-capital", title: "Working capital management", summary: "Managing inventory, receivables and cash.", sortOrder: 6 },
+  // Business Strategy & Technology (m-bst)
+  { id: "t-bst-choice", moduleId: "m-bst", slug: "strategic-choice", title: "Strategic choice", summary: "Generic strategies and evaluation criteria.", sortOrder: 2 },
+  { id: "t-bst-impl", moduleId: "m-bst", slug: "implementation", title: "Implementation & change", summary: "Executing and monitoring strategy.", sortOrder: 3 },
+  { id: "t-bst-tech", moduleId: "m-bst", slug: "technology-strategy", title: "Technology & data strategy", summary: "Digital strategy, data and cyber risk.", sortOrder: 4 },
+  // Corporate Reporting (m-cr)
+  { id: "t-cr-std", moduleId: "m-cr", slug: "applying-ifrs", title: "Applying IFRS", summary: "Complex application of reporting standards.", sortOrder: 2 },
+  { id: "t-cr-anal", moduleId: "m-cr", slug: "analysis", title: "Analysis & interpretation", summary: "Interpreting and critiquing financial statements.", sortOrder: 3 },
+  { id: "t-cr-assur", moduleId: "m-cr", slug: "assurance-reporting", title: "Assurance of reports", summary: "Audit and assurance of corporate reports.", sortOrder: 4 },
+  { id: "t-cr-eth", moduleId: "m-cr", slug: "ethics-judgement", title: "Ethics & judgement", summary: "Ethical and reporting judgement.", sortOrder: 5 },
+  // Strategic Business Management (m-sbm)
+  { id: "t-sbm-strat", moduleId: "m-sbm", slug: "business-strategy", title: "Business strategy", summary: "Strategic analysis and choice in context.", sortOrder: 2 },
+  { id: "t-sbm-val", moduleId: "m-sbm", slug: "valuations-ma", title: "Valuations & M&A", summary: "Company valuation, mergers and acquisitions.", sortOrder: 3 },
+  { id: "t-sbm-risk", moduleId: "m-sbm", slug: "risk-instruments", title: "Risk & financial instruments", summary: "Risk management and treasury instruments.", sortOrder: 4 },
+  { id: "t-sbm-eth", moduleId: "m-sbm", slug: "ethics-sbm", title: "Ethics", summary: "Ethical conflicts in strategic decisions.", sortOrder: 5 },
+  // Case Study (m-cs)
+  { id: "t-cs-anal", moduleId: "m-cs", slug: "financial-analysis", title: "Financial analysis", summary: "Analysing performance against prior year/budget.", sortOrder: 2 },
+  { id: "t-cs-prop", moduleId: "m-cs", slug: "evaluating-proposals", title: "Evaluating proposals", summary: "Assessing the viability of proposals.", sortOrder: 3 },
+  { id: "t-cs-strat", moduleId: "m-cs", slug: "strategic-options", title: "Strategic options", summary: "Evaluating and recommending options.", sortOrder: 4 },
+  { id: "t-cs-eth", moduleId: "m-cs", slug: "ethics-trust", title: "Ethics & business trust", summary: "Identifying ethical and data-integrity issues.", sortOrder: 5 },
 ];
 
 export const learningObjectives: LearningObjective[] = [
