@@ -3,6 +3,7 @@
 import type { Answer, Difficulty, Question, QuestionType } from "@/types/domain";
 import { topics } from "@/data/curriculum";
 import { extraQuestions } from "@/data/questions-extra";
+import { farQuestions } from "@/data/questions-far";
 
 let aSeq = 0;
 function mc(
@@ -342,7 +343,7 @@ function fillerForTopic(topicId: string, title: string, n: number): Question[] {
 }
 
 // All hand-authored questions (the original curated set + the expanded bank).
-const authoredQuestions: Question[] = [...curatedQuestions, ...extraQuestions];
+const authoredQuestions: Question[] = [...curatedQuestions, ...extraQuestions, ...farQuestions];
 
 const fillerQuestions: Question[] = topics.flatMap((t) => {
   const authoredCount = authoredQuestions.filter((q) => q.topicId === t.id).length;
