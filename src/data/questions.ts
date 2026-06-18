@@ -3,12 +3,22 @@
 import type { Answer, Difficulty, Question, QuestionType } from "@/types/domain";
 import { topics } from "@/data/curriculum";
 import { extraQuestions } from "@/data/questions-extra";
-import { farQuestions } from "@/data/questions-far";
+// Per-paper authored banks (≈30 questions each, exam-accurate).
 import { accQuestions } from "@/data/questions-acc";
 import { assQuestions } from "@/data/questions-ass";
 import { btfQuestions } from "@/data/questions-btf";
 import { lawQuestions } from "@/data/questions-law";
 import { miQuestions } from "@/data/questions-mi";
+import { potQuestions } from "@/data/questions-pot";
+import { aaQuestions } from "@/data/questions-aa";
+import { farQuestions } from "@/data/questions-far";
+import { tcQuestions } from "@/data/questions-tc";
+import { bptQuestions } from "@/data/questions-bpt";
+import { fmQuestions } from "@/data/questions-fm";
+import { bstQuestions } from "@/data/questions-bst";
+import { crQuestions } from "@/data/questions-cr";
+import { sbmQuestions } from "@/data/questions-sbm";
+import { csQuestions } from "@/data/questions-cs";
 
 let aSeq = 0;
 function mc(
@@ -351,12 +361,21 @@ function fillerForTopic(topicId: string, title: string, n: number): Question[] {
 const authoredQuestions: Question[] = [
   ...curatedQuestions,
   ...extraQuestions,
-  ...farQuestions,
   ...accQuestions,
   ...assQuestions,
   ...btfQuestions,
   ...lawQuestions,
   ...miQuestions,
+  ...potQuestions,
+  ...aaQuestions,
+  ...farQuestions,
+  ...tcQuestions,
+  ...bptQuestions,
+  ...fmQuestions,
+  ...bstQuestions,
+  ...crQuestions,
+  ...sbmQuestions,
+  ...csQuestions,
 ];
 
 const fillerQuestions: Question[] = topics.flatMap((t) => {
