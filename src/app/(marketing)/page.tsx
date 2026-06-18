@@ -35,7 +35,7 @@ export default function LandingPage() {
             <Link href="/login">Log in</Link>
           </Button>
           <Button asChild>
-            <Link href="/dashboard">Try the demo</Link>
+            <Link href="/signup">Get started</Link>
           </Button>
         </div>
       </header>
@@ -57,16 +57,16 @@ export default function LandingPage() {
             </p>
             <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
               <Button asChild size="lg" className="w-full sm:w-auto">
-                <Link href="/dashboard">
-                  Explore the demo <ArrowRight className="size-4" />
+                <Link href="/signup">
+                  Get started free <ArrowRight className="size-4" />
                 </Link>
               </Button>
               <Button asChild size="lg" variant="outline" className="w-full sm:w-auto">
-                <Link href="/learn">See the learning map</Link>
+                <Link href="/login">Log in</Link>
               </Button>
             </div>
             <p className="mt-4 text-xs text-muted-foreground">
-              No sign-up needed — the demo runs on sample data.
+              Free to use — create an account and start tracking your progress.
             </p>
           </div>
         </section>

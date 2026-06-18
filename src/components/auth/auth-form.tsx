@@ -24,8 +24,7 @@ export function AuthForm({ mode }: { mode: "login" | "signup" }) {
     const password = String(form.get("password"));
     const name = String(form.get("name") ?? "").trim();
 
-    // Supabase is wired but optional in the demo. If configured, authenticate;
-    // otherwise fall through to the explorable demo experience.
+    // Authenticate against Supabase.
     if (supabaseEnabled) {
       try {
         const { createClient } = await import("@/lib/supabase/client");
@@ -88,15 +87,6 @@ export function AuthForm({ mode }: { mode: "login" | "signup" }) {
             {isSignup ? "Log in" : "Create one"}
           </Link>
         </p>
-        {!supabaseEnabled && (
-          <p className="mt-2 text-center text-xs text-muted-foreground">
-            Or{" "}
-            <Link href="/dashboard" className="underline">
-              continue as a guest
-            </Link>
-            .
-          </p>
-        )}
       </CardContent>
     </Card>
   );

@@ -97,6 +97,7 @@ export interface DataProvider {
   getLeaderboard(): Promise<LeaderboardEntry[]>;
   getGamification(userId: string): Promise<GamificationData>;
   getProfile(userId: string): Promise<Profile | undefined>;
+  updateProfile(userId: string, patch: Partial<Profile>): Promise<void>;
   // admin
   listAllQuestions(): Promise<Question[]>;
   upsertQuestion(q: Question): Promise<Question>;

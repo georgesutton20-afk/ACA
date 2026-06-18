@@ -322,6 +322,10 @@ export const seedProvider: DataProvider = {
     return userId === DEMO_USER_ID ? demoProfile : { ...demoProfile, id: userId };
   },
 
+  async updateProfile(_userId, patch) {
+    Object.assign(demoProfile, patch);
+  },
+
   async listAllQuestions() {
     return [...questionStore];
   },

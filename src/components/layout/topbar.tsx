@@ -68,17 +68,9 @@ export function Topbar({
               </Link>
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            {onSignOut ? (
-              <DropdownMenuItem onSelect={() => onSignOut()}>
-                <LogOut /> Log out
-              </DropdownMenuItem>
-            ) : (
-              <DropdownMenuItem asChild>
-                <Link href="/">
-                  <LogOut /> Exit demo
-                </Link>
-              </DropdownMenuItem>
-            )}
+            <DropdownMenuItem onSelect={() => onSignOut?.()}>
+              <LogOut /> Log out
+            </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       </div>

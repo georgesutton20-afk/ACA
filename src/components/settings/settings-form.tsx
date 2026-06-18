@@ -22,6 +22,8 @@ import {
 } from "@/components/ui/select";
 import { ThemeToggle } from "@/components/layout/theme-toggle";
 import { cn } from "@/lib/utils";
+import { data } from "@/lib/data";
+import { useAuth } from "@/lib/auth-client";
 import type { AcaLevel, Profile } from "@/types/domain";
 
 const LEVEL_OPTIONS: { value: AcaLevel; label: string }[] = [
@@ -33,6 +35,7 @@ const LEVEL_OPTIONS: { value: AcaLevel; label: string }[] = [
 const GOAL_OPTIONS = [20, 50, 100, 150, 200];
 
 export function SettingsForm({ profile }: { profile?: Profile }) {
+  const { userId, signOut, refreshHeader } = useAuth();
   const [displayName, setDisplayName] = React.useState(profile?.displayName ?? "");
   const [targetLevel, setTargetLevel] = React.useState<AcaLevel | "">(
     profile?.targetLevel ?? "",
@@ -44,16 +47,23 @@ export function SettingsForm({ profile }: { profile?: Profile }) {
   const [saved, setSaved] = React.useState(false);
   const [pending, setPending] = React.useState(false);
 
-  function handleSave(event: React.FormEvent) {
+  async function handleSave(event: React.FormEvent) {
     event.preventDefault();
-    // NOTE: profile persistence lands when Supabase is enabled — the seed data
-    // layer has no profile-write method, so this is a demo-only confirmation.
+    if (!userId) return;
     setPending(true);
     setSaved(false);
-    setTimeout(() => {
-      setPending(false);
+    try {
+      await data.updateProfile(userId, {
+        displayName: displayName.trim(),
+        targetLevel: targetLevel || undefined,
+        examDate: examDate || undefined,
+        dailyGoalXp: Number(dailyGoalXp),
+      });
+      refreshHeader();
       setSaved(true);
-    }, 400);
+    } finally {
+      setPending(false);
+    }
   }
 
   return (
@@ -146,7 +156,7 @@ export function SettingsForm({ profile }: { profile?: Profile }) {
               role="status"
             >
               <Check className="size-4" />
-              Saved (demo)
+              Saved
             </span>
           )}
         </CardFooter>
@@ -173,18 +183,15 @@ export function SettingsForm({ profile }: { profile?: Profile }) {
       <Card>
         <CardHeader>
           <CardTitle>Account</CardTitle>
-          <CardDescription>
-            Connect Supabase to enable real accounts and sign-in.
-          </CardDescription>
+          <CardDescription>Manage your session.</CardDescription>
         </CardHeader>
         <CardContent>
           <p className="text-sm text-muted-foreground">
-            You are exploring in demo mode. Authentication, profile persistence and
-            sync activate once Supabase is configured.
+            Your progress is saved to your account and synced across devices.
           </p>
         </CardContent>
         <CardFooter>
-          <Button type="button" variant="outline" disabled>
+          <Button type="button" variant="outline" onClick={() => signOut()}>
             <LogOut className="size-4" />
             Sign out
           </Button>

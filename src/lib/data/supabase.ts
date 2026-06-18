@@ -462,4 +462,15 @@ export const supabaseProvider: DataProvider = {
   async getProfile(userId) {
     return fetchProfile(userId);
   },
+
+  async updateProfile(userId, patch) {
+    const row: Record<string, unknown> = {};
+    if (patch.displayName !== undefined) row.display_name = patch.displayName;
+    if (patch.targetLevel !== undefined) row.target_level = patch.targetLevel || null;
+    if (patch.examDate !== undefined) row.exam_date = patch.examDate || null;
+    if (patch.dailyGoalXp !== undefined) row.daily_goal_xp = patch.dailyGoalXp;
+    if (Object.keys(row).length > 0) {
+      await sb().from("profiles").update(row).eq("id", userId);
+    }
+  },
 };

@@ -36,8 +36,8 @@ export function Sidebar({ isAdmin }: { isAdmin: boolean }) {
           })}
       </nav>
       <div className="border-t p-4 text-xs text-muted-foreground">
-        <p className="font-medium text-foreground">Demo mode</p>
-        <p>Running on seed data. Connect Supabase to go live.</p>
+        <p className="font-medium text-foreground">ACA Academy</p>
+        <p>Track your progress across every paper.</p>
       </div>
     </aside>
   );
